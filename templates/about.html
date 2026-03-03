@@ -1,0 +1,88 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}
+О нас — Dessert
+{% endblock %}
+
+{% block content %}
+<section class="section-spacing">
+    <div class="container" style="max-width: 1200px; padding: 0 3rem;">
+        <div class="row g-5 align-items-center mb-5">
+            <div class="col-lg-6">
+                <h1 class="display-5 fw-bold mb-3">О кондитерской Dessert</h1>
+                <p class="lead mb-4">
+                    Dessert — это небольшая кондитерская мастерская в Санкт-Петербурге. Мы готовим десерты
+                    ручной работы из качественных ингредиентов и уделяем внимание каждому заказу.
+                </p>
+                <div class="row g-3 small text-muted">
+                    <div class="col-sm-4">
+                        <div class="fw-semibold text-dark">5+ лет</div>
+                        <div>опыта работы</div>
+                    </div>
+                    <div class="col-sm-4">
+                        <div class="fw-semibold text-dark">1000+</div>
+                        <div>довольных клиентов</div>
+                    </div>
+                    <div class="col-sm-4">
+                        <div class="fw-semibold text-dark">7 дней</div>
+                        <div>в неделю на связи</div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="minimal-card h-100">
+                    <h2 class="h5 fw-bold mb-3">Наш подход</h2>
+                    <ul class="text-muted mb-0" style="padding-left: 1.2rem;">
+                        <li class="mb-2">Работаем только со свежими и проверенными продуктами.</li>
+                        <li class="mb-2">Готовим небольшими партиями, чтобы десерты были свежими в день доставки.</li>
+                        <li class="mb-2">Подстраиваемся под ваши пожелания по вкусу, начинкам и оформлению.</li>
+                        <li>Помогаем подобрать десерты под формат мероприятия и бюджет.</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="row g-5 align-items-stretch">
+            <div class="col-lg-6">
+                <div class="minimal-card h-100">
+                    <h2 class="h5 fw-bold mb-3">Контакты</h2>
+                    <p class="mb-2">
+                        <strong>Адрес:</strong> Санкт-Петербург, Невский проспект, 100
+                    </p>
+                    <p class="mb-2">
+                        <strong>Телефон:</strong>
+                        <a href="tel:+78120000000" class="footer-link">+7 (812) 000-00-00</a>
+                    </p>
+                    <p class="mb-3">
+                        <strong>E-mail:</strong>
+                        <a href="mailto:info@desert-shop.ru" class="footer-link">info@desert-shop.ru</a>
+                    </p>
+                    <p class="text-muted mb-0" style="font-size: 0.95rem;">
+                        Пишите или звоните нам, чтобы оформить заказ, уточнить наличие или обсудить индивидуальный проект.
+                        Мы обычно отвечаем в течение рабочего дня.
+                    </p>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="minimal-card h-100">
+                    <h2 class="h5 fw-bold mb-3">Мы на карте</h2>
+                    <div class="ratio ratio-16x9 rounded-3 overflow-hidden" style="border: 1px solid var(--border);">
+                        <!-- Можно заменить src на ваш реальный виджет карты (Яндекс/Google) -->
+                        <iframe
+                            src="https://www.openstreetmap.org/export/embed.html?bbox=30.299%2C59.92%2C30.36%2C59.94&amp;layer=mapnik"
+                            style="border: 0;"
+                            loading="lazy"
+                            referrerpolicy="no-referrer-when-downgrade">
+                        </iframe>
+                    </div>
+                    <p class="text-muted mt-3 mb-0" style="font-size: 0.9rem;">
+                        Мастерская находится недалеко от центра города. Перед визитом, пожалуйста, свяжитесь с нами,
+                        чтобы согласовать время и оформление пропуска, если это потребуется.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

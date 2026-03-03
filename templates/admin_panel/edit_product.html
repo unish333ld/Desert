@@ -1,0 +1,168 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Редактировать товар — Desert{% endblock %}
+
+{% block content %}
+<section class="py-5">
+    <div class="container" style="max-width: 900px;">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h1 class="h3 fw-bold">Редактировать товар</h1>
+            <a href="{% url 'admin_panel' %}" class="btn btn-outline-dark">← Назад</a>
+        </div>
+        
+        <div class="minimal-card">
+            <form method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                
+                <div class="mb-3">
+                    <label class="form-label fw-bold">Название</label>
+                    <input type="text" name="name" class="form-control" value="{{ product.name }}" required>
+                </div>
+                
+                <div class="mb-3">
+                    <label class="form-label fw-bold">Описание</label>
+                    <textarea name="description" class="form-control" rows="3" required style="resize: none;">{{ product.description }}</textarea>
+                </div>
+                
+                
+                <div class="mb-3">
+                    <label class="form-label fw-bold">Аллергены</label>
+                    <textarea name="allergens" class="form-control" rows="2" required style="resize: none;">{{ product.allergens }}</textarea>
+                </div>
+                
+                <div class="mb-3">
+                    <label class="form-label fw-bold">Вес в граммах</label>
+                    <input type="number" name="weight" class="form-control" value="{% if product.weight %}{{ product.weight }}{% endif %}" required>
+                </div>
+                
+                <div class="mb-3">
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" name="available" id="available" {% if product.available %}checked{% endif %}>
+                        <label class="form-check-label" for="available">Товар в наличии</label>
+                    </div>
+                </div>
+                
+                <div class="row g-3 mb-3">
+                    <div class="col-md-6">
+                        <label class="form-label fw-bold">Цена</label>
+                        <input type="number" step="0.01" name="price" class="form-control" value="{{ product.price|stringformat:'.2f' }}" required>
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label fw-bold">Цена со скидкой (необязательно)</label>
+                        <input type="number" step="0.01" name="discount_price" class="form-control" value="{% if product.discount_price %}{{ product.discount_price|stringformat:'.2f' }}{% endif %}" placeholder="Оставьте пустым чтобы убрать скидку">
+                    </div>
+                </div>
+                <div class="row g-3 mb-3">
+                    <div class="col-md-6">
+                        <label class="form-label fw-bold">Тип десерта</label>
+                        <select name="dessert_type" class="form-control" required>
+                            <option value="Торты" {% if product.dessert_type == 'Торты' %}selected{% endif %}>Торты</option>
+                            <option value="Бенто" {% if product.dessert_type == 'Бенто' %}selected{% endif %}>Бенто</option>
+                            <option value="Горячий шоколад" {% if product.dessert_type == 'Горячий шоколад' %}selected{% endif %}>Горячий шоколад</option>
+                            <option value="Домашний зефир" {% if product.dessert_type == 'Домашний зефир' %}selected{% endif %}>Домашний зефир</option>
+                            <option value="Маршмеллоу" {% if product.dessert_type == 'Маршмеллоу' %}selected{% endif %}>Маршмеллоу</option>
+                            <option value="Безе" {% if product.dessert_type == 'Безе' %}selected{% endif %}>Безе</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="mb-3">
+                    <label class="form-label fw-bold d-block">Изображение</label>
+                    <div class="mb-2 position-relative" style="display: inline-block;" id="imageContainer">
+                        <img src="{% static product.image %}" alt="{{ product.name }}" style="max-width: 200px; border-radius: 8px;" id="currentImage">
+                        <button type="button" class="btn btn-danger btn-sm position-absolute" id="deleteImageBtn" style="top: 5px; right: 5px; padding: 0.25rem 0.5rem;">✕</button>
+                        <input type="hidden" name="delete_image" id="deleteImageInput" value="">
+                    </div>
+                    <input type="file" name="image" class="form-control mb-2" accept="image/jpeg,image/jpg,image/png,image/webp" id="imageInput">
+                    <small class="text-muted d-block mt-1">Разрешены: JPG, JPEG, PNG, WEBP. Максимум 1 файл.</small>
+                </div>
+                
+                <div class="d-flex gap-2">
+                    <button type="submit" class="btn btn-dark">Сохранить изменения</button>
+                    <a href="{% url 'admin_panel' %}" class="btn btn-outline-dark">Отмена</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</section>
+
+<!-- Модальное окно подтверждения удаления изображения -->
+<div class="modal fade" id="deleteImageModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content" style="border-radius: 16px; border: 1px solid var(--border);">
+            <div class="modal-header" style="border-bottom: 1px solid var(--border);">
+                <h5 class="modal-title fw-bold">Подтверждение удаления</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <p>Вы действительно хотите удалить изображение товара?</p>
+            </div>
+            <div class="modal-footer" style="border-top: 1px solid var(--border);">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Отмена</button>
+                <button type="button" class="btn btn-danger" id="confirmDeleteImage">Удалить</button>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const textarea = document.querySelector('textarea[name="description"]');
+    if (textarea) {
+        textarea.style.height = 'auto';
+        textarea.style.height = textarea.scrollHeight + 'px';
+    }
+    
+    const imageInput = document.getElementById('imageInput');
+    const deleteBtn = document.getElementById('deleteImageBtn');
+    const deleteInput = document.getElementById('deleteImageInput');
+    const currentImage = document.getElementById('currentImage');
+    const imageContainer = document.getElementById('imageContainer');
+    
+    // Ограничение на 1 файл
+    if (imageInput) {
+        imageInput.addEventListener('change', function() {
+            if (this.files.length > 1) {
+                alert('Можно загрузить только 1 файл');
+                this.value = '';
+                return;
+            }
+            
+            // Предпросмотр нового изображения
+            if (this.files && this.files[0]) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    currentImage.src = e.target.result;
+                    deleteInput.value = '';
+                    imageContainer.style.display = 'inline-block';
+                };
+                reader.readAsDataURL(this.files[0]);
+            }
+        });
+    }
+    
+    // Удаление изображения
+    if (deleteBtn) {
+        deleteBtn.addEventListener('click', function(e) {
+            e.preventDefault();
+            const modal = new bootstrap.Modal(document.getElementById('deleteImageModal'));
+            modal.show();
+        });
+    }
+    
+    // Подтверждение удаления
+    const confirmBtn = document.getElementById('confirmDeleteImage');
+    if (confirmBtn) {
+        confirmBtn.addEventListener('click', function() {
+            deleteInput.value = 'true';
+            imageContainer.style.display = 'none';
+            imageInput.value = '';
+            bootstrap.Modal.getInstance(document.getElementById('deleteImageModal')).hide();
+        });
+    }
+});
+</script>
+{% endblock %}

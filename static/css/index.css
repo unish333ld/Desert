@@ -1,0 +1,310 @@
+/* Минималистичный слайдер */
+.minimal-carousel-wrapper {
+    position: relative;
+    border-radius: 20px;
+    overflow: hidden;
+    border: 1px solid var(--border);
+    background: var(--surface);
+}
+
+.minimal-carousel-wrapper .carousel-inner {
+    height: 600px;
+    background: var(--surface);
+}
+
+.minimal-carousel-wrapper .carousel-item {
+    height: 600px;
+    background: var(--surface);
+}
+
+.minimal-carousel-wrapper .carousel-image-wrapper {
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+}
+
+.minimal-carousel-wrapper .carousel-image-wrapper img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+    display: block;
+}
+
+.minimal-carousel-wrapper .carousel-indicators {
+    position: absolute;
+    bottom: 1.5rem;
+    left: 50%;
+    transform: translateX(-50%);
+    margin: 0;
+    padding: 0;
+    z-index: 10;
+}
+
+.minimal-carousel-wrapper .carousel-indicators button {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: rgba(0, 0, 0, 0.3);
+    border: none;
+    padding: 0;
+    margin: 0 0.25rem;
+    opacity: 1;
+    transition: all 0.3s ease;
+}
+
+.minimal-carousel-wrapper .carousel-indicators button.active {
+    background: var(--text-primary);
+    width: 24px;
+    border-radius: 3px;
+}
+
+.minimal-carousel-wrapper .carousel-indicators button:hover {
+    background: rgba(0, 0, 0, 0.5);
+}
+
+.minimal-carousel-wrapper .carousel-control-prev,
+.minimal-carousel-wrapper .carousel-control-next {
+    width: 48px;
+    height: 48px;
+    background: rgba(255, 255, 255, 0.95);
+    border: 1px solid var(--border);
+    border-radius: 50%;
+    top: 50%;
+    transform: translateY(-50%);
+    opacity: 0;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.minimal-carousel-wrapper:hover .carousel-control-prev,
+.minimal-carousel-wrapper:hover .carousel-control-next {
+    opacity: 1;
+}
+
+.minimal-carousel-wrapper .carousel-control-prev {
+    left: 1.5rem;
+}
+
+.minimal-carousel-wrapper .carousel-control-next {
+    right: 1.5rem;
+}
+
+.minimal-carousel-wrapper .carousel-control-prev:hover,
+.minimal-carousel-wrapper .carousel-control-next:hover {
+    background: var(--text-primary);
+    border-color: var(--text-primary);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.minimal-carousel-wrapper .carousel-control-prev-icon,
+.minimal-carousel-wrapper .carousel-control-next-icon {
+    filter: invert(0);
+    width: 20px;
+    height: 20px;
+}
+
+.minimal-carousel-wrapper .carousel-control-prev:hover .carousel-control-prev-icon,
+.minimal-carousel-wrapper .carousel-control-next:hover .carousel-control-next-icon {
+    filter: invert(1);
+}
+
+.minimal-carousel-wrapper .carousel-caption {
+    position: absolute;
+    bottom: 3rem;
+    left: 50%;
+    transform: translateX(-50%);
+    text-align: center;
+    background: rgba(255, 255, 255, 0.3);
+    padding: 1.5rem 2rem;
+    border-radius: 16px;
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    color: var(--text-primary);
+    width: auto;
+    max-width: 600px;
+}
+
+.minimal-carousel-wrapper .carousel-caption h5 {
+    font-size: 1.5rem;
+    margin-bottom: 0.5rem;
+}
+
+.minimal-carousel-wrapper .carousel-caption p {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: var(--text-primary);
+}
+
+.minimal-carousel-wrapper .carousel-caption .btn {
+    border-radius: 50px;
+    font-weight: 600;
+    transition: all 0.2s ease;
+}
+
+.minimal-carousel-wrapper .carousel-caption .btn:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-md);
+}
+
+@media (max-width: 991px) {
+    .container {
+        padding: 0 1.5rem !important;
+    }
+
+    .display-3 {
+        font-size: 2.5rem;
+    }
+
+    .display-6 {
+        font-size: 2rem;
+    }
+
+    .display-5 {
+        font-size: 2rem;
+    }
+
+    .minimal-carousel-wrapper .carousel-inner {
+        height: 450px;
+    }
+
+    .minimal-carousel-wrapper .carousel-item {
+        height: 450px;
+    }
+
+    .minimal-carousel-wrapper .carousel-image-wrapper {
+        padding: 0;
+    }
+
+    .minimal-carousel-wrapper .carousel-control-prev,
+    .minimal-carousel-wrapper .carousel-control-next {
+        width: 40px;
+        height: 40px;
+        opacity: 0.8;
+    }
+
+    .minimal-carousel-wrapper .carousel-control-prev {
+        left: 1rem;
+    }
+
+    .minimal-carousel-wrapper .carousel-control-next {
+        right: 1rem;
+    }
+
+    .minimal-carousel-wrapper .carousel-indicators {
+        bottom: 1rem;
+    }
+
+    .minimal-carousel-wrapper .carousel-caption {
+        bottom: 2rem;
+        padding: 1rem 1.5rem;
+        max-width: 90%;
+    }
+
+    .minimal-carousel-wrapper .carousel-caption h5 {
+        font-size: 1.25rem;
+        margin-bottom: 0.5rem;
+    }
+
+    .minimal-carousel-wrapper .carousel-caption p {
+        font-size: 1rem;
+        margin-bottom: 0.75rem;
+    }
+
+    .minimal-carousel-wrapper .carousel-caption .btn {
+        padding: 0.5rem 1.5rem;
+        font-size: 0.9rem;
+    }
+
+    .minimal-card {
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: 20px;
+        padding: 3rem;
+        transition: all 0.3s ease;
+    }
+
+    .minimal-card:hover {
+        box-shadow: var(--shadow-md);
+        transform: translateY(-2px);
+    }
+
+    .minimal-image-wrapper {
+        background: var(--surface);
+    }
+}
+
+@media (max-width: 576px) {
+    .minimal-carousel-wrapper .carousel-inner {
+        height: 350px;
+    }
+
+    .minimal-carousel-wrapper .carousel-item {
+        height: 350px;
+    }
+
+    .minimal-carousel-wrapper .carousel-image-wrapper {
+        padding: 0;
+    }
+
+    .display-3 {
+        font-size: 2rem;
+    }
+
+    .minimal-carousel-wrapper .carousel-control-prev,
+    .minimal-carousel-wrapper .carousel-control-next {
+        width: 36px;
+        height: 36px;
+    }
+
+    .minimal-carousel-wrapper .carousel-control-prev-icon,
+    .minimal-carousel-wrapper .carousel-control-next-icon {
+        width: 16px;
+        height: 16px;
+    }
+
+    .minimal-carousel-wrapper .carousel-indicators button {
+        width: 5px;
+        height: 5px;
+    }
+
+    .minimal-carousel-wrapper .carousel-indicators button.active {
+        width: 20px;
+    }
+
+    .minimal-carousel-wrapper .carousel-caption {
+        bottom: 1rem;
+        padding: 0.5rem 0.75rem;
+        width: calc(100% - 1.5rem);
+        max-width: calc(100% - 1.5rem);
+        left: 0.75rem;
+        right: 0.75rem;
+        transform: none;
+        border-radius: 8px;
+    }
+
+    .minimal-carousel-wrapper .carousel-caption h5 {
+        font-size: 0.85rem;
+        margin-bottom: 0.15rem;
+        line-height: 1.2;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    .minimal-carousel-wrapper .carousel-caption p {
+        font-size: 0.75rem;
+        margin-bottom: 0.4rem;
+        line-height: 1.1;
+    }
+
+    .minimal-carousel-wrapper .carousel-caption .btn {
+        padding: 0.3rem 0.75rem;
+        font-size: 0.75rem;
+        white-space: nowrap;
+    }
+}

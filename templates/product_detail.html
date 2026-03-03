@@ -1,0 +1,85 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}
+{{ product.name }} — Desert
+{% endblock %}
+
+{% block content %}
+<section class="section-spacing">
+    <div class="container" style="max-width: 1200px; padding: 0 3rem;">
+        <div class="row g-5 align-items-center">
+            <div class="col-lg-6">
+                <div class="ratio ratio-1x1 rounded-3 overflow-hidden" style="border: 1px solid var(--border);">
+                    <img src="{% static product.image %}" class="w-100 h-100" style="object-fit: cover;" alt="{{ product.name }}">
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="minimal-card">
+                    <h1 class="display-6 fw-bold mb-3">{{ product.name }}</h1>
+                    <p class="lead mb-4">{{ product.description }}</p>
+                    
+                    
+                    {% if product.allergens %}
+                    <div class="mb-3">
+                        <h6 class="fw-bold">Аллергены:</h6>
+                        <p class="text-muted">{{ product.allergens }}</p>
+                    </div>
+                    {% endif %}
+                    
+                    {% if product.weight %}
+                    <div class="mb-4">
+                        <div class="d-flex justify-content-between align-items-center" style="border-bottom: 1px dotted #ddd; padding-bottom: 0.5rem;">
+                            <span class="fw-bold">Вес</span>
+                            <span class="text-muted">~ {{ product.weight }} г</span>
+                        </div>
+                    </div>
+                    {% endif %}
+                    <div class="d-flex align-items-center justify-content-between mb-4">
+                        {% if product.discount_price %}
+                        <div>
+                            <span class="display-6 fw-bold">{{ product.discount_price }} ₽</span>
+                            <div><small class="text-muted" style="text-decoration: line-through;">{{ product.price }} ₽</small></div>
+                        </div>
+                        {% else %}
+                        <span class="display-6 fw-bold">{{ product.price }} ₽</span>
+                        {% endif %}
+                        {% if product.available %}
+                        <span class="badge bg-success">В наличии</span>
+                        {% else %}
+                        <span class="badge bg-secondary">Нет в наличии</span>
+                        {% endif %}
+                    </div>
+                    <div class="d-grid gap-3">
+                        {% if product.available %}
+                            {% if user.is_authenticated and not user.is_superuser %}
+                            <form method="post" action="{% url 'add_to_cart' product.id %}">
+                                {% csrf_token %}
+                                <button type="submit" class="btn btn-dark btn-lg w-100" style="border-radius: 50px;">
+                                    Добавить в корзину
+                                </button>
+                            </form>
+                            {% elif user.is_superuser %}
+                            <button class="btn btn-secondary btn-lg w-100" style="border-radius: 50px;" disabled>
+                                Администратор не может добавлять товары
+                            </button>
+                            {% else %}
+                            <a href="{% url 'login' %}" class="btn btn-dark btn-lg" style="border-radius: 50px;">
+                                Войдите, чтобы добавить в корзину
+                            </a>
+                            {% endif %}
+                        {% else %}
+                            <button class="btn btn-secondary btn-lg w-100" style="border-radius: 50px;" disabled>
+                                Товар отсутствует в наличии
+                            </button>
+                        {% endif %}
+                        <a href="{% url 'catalog' %}" class="btn btn-outline-dark btn-lg" style="border-radius: 50px;">
+                            ← Вернуться к каталогу
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

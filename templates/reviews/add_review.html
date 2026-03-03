@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+
+{% block title %}Оставить отзыв — Desert{% endblock %}
+
+{% block content %}
+<section class="py-5">
+    <div class="container" style="max-width: 600px;">
+        <h1 class="h3 fw-bold mb-4">Оставить отзыв</h1>
+        
+        <div class="minimal-card mb-4">
+            <h2 class="h5 fw-bold mb-3">Заказ #{{ order.order_number }}</h2>
+            {% for item in order.items.all %}
+                <div class="text-muted small">{{ item.product_name }} × {{ item.quantity }}</div>
+            {% endfor %}
+        </div>
+        
+        <div class="minimal-card">
+            <form method="post">
+                {% csrf_token %}
+                <div class="mb-3">
+                    <label class="form-label fw-bold">Оценка</label>
+                    <div class="d-flex gap-2">
+                        {% for i in "12345" %}
+                        <input type="radio" class="btn-check" name="rating" id="rating{{ i }}" value="{{ i }}" required>
+                        <label class="btn btn-outline-dark" for="rating{{ i }}" style="border-radius: 50%; width: 50px; height: 50px; display: flex; align-items: center; justify-content: center;">{{ i }}</label>
+                        {% endfor %}
+                    </div>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label fw-bold">Комментарий</label>
+                    <textarea class="form-control" name="comment" rows="5" required></textarea>
+                </div>
+                <button type="submit" class="btn btn-dark w-100">Отправить отзыв</button>
+            </form>
+        </div>
+    </div>
+</section>
+{% endblock %}

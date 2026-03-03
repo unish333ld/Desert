@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+
+{% block title %}Заказ оформлен — Desert{% endblock %}
+
+{% block content %}
+<section class="py-5">
+    <div class="container text-center" style="max-width: 600px;">
+        <div class="mb-4">
+            <svg width="80" height="80" viewBox="0 0 24 24" fill="none" stroke="#22c55e" stroke-width="2">
+                <circle cx="12" cy="12" r="10"></circle>
+                <path d="M9 12l2 2 4-4"></path>
+            </svg>
+        </div>
+        <h1 class="h3 fw-bold mb-3">Заказ успешно оформлен!</h1>
+        <p class="lead text-muted mb-4">
+            Спасибо за ваш заказ. Мы свяжемся с вами в ближайшее время для уточнения деталей доставки.
+        </p>
+        <div class="d-flex gap-3 justify-content-center">
+            <a href="{% url 'catalog' %}" class="btn btn-dark">Вернуться в каталог</a>
+            <a href="{% url 'profile' %}" class="btn btn-outline-dark">Мой профиль</a>
+        </div>
+    </div>
+</section>
+{% endblock %}

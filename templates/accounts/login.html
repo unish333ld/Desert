@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Вход — Desert{% endblock %}
+
+{% block extra_css %}
+<link href="{% static 'css/auth.css' %}" rel="stylesheet">
+{% endblock %}
+
+{% block content %}
+<section class="py-5">
+    <div class="container" style="max-width: 500px;">
+        <h1 class="h3 fw-bold mb-4 text-center">Вход</h1>
+        
+        <div class="card" style="border: 1px solid var(--border); border-radius: 16px; padding: 2rem;">
+            <form method="post" novalidate id="loginForm">
+                {% csrf_token %}
+                <div class="mb-3">
+                    <label class="form-label fw-medium">Имя пользователя</label>
+                    <input type="text" name="username" class="form-control" value="{{ form_data.username|default:'' }}">
+                    <div class="error-message"></div>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label fw-medium">Пароль</label>
+                    <div class="password-wrapper">
+                        <input type="password" name="password" class="form-control">
+                        <span class="password-toggle" onclick="togglePassword(this)">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                                <circle cx="12" cy="12" r="3"></circle>
+                            </svg>
+                        </span>
+                    </div>
+                    <div class="error-message"></div>
+                </div>
+                <button type="submit" class="btn btn-dark w-100 py-2 mt-3">Войти</button>
+            </form>
+            <p class="text-center mt-3 mb-0">
+                Нет аккаунта? <a href="{% url 'register' %}" class="text-dark fw-medium">Зарегистрироваться</a>
+            </p>
+        </div>
+    </div>
+</section>
+
+{% block extra_js %}
+<script src="{% static 'js/auth.js' %}"></script>
+{% if messages %}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    showFieldErrors([{% for message in messages %}'{{ message }}'{% if not forloop.last %}, {% endif %}{% endfor %}]);
+});
+</script>
+{% endif %}
+{% endblock %}
+{% endblock %}

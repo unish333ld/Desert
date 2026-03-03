@@ -1,0 +1,247 @@
+{% load static %}
+<!doctype html>
+<html lang="ru">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{% block title %}Dessert - Кондитерские изделия ручной работы{% endblock %}</title>
+    <meta name="description" content="{% block description %}Интернет-магазин Dessert - кондитерские изделия ручной работы. Торты, пирожные, десерты с доставкой. Свежая выпечка каждый день.{% endblock %}">
+    <meta name="keywords" content="{% block keywords %}кондитерские изделия, торты на заказ, пирожные, десерты, сладости, выпечка ручной работы{% endblock %}">
+    <meta name="author" content="Dessert">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="{% block canonical %}{{ request.build_absolute_uri }}{% endblock %}">
+    
+    <!-- VK / OK -->
+    <meta property="vk:image" content="{{ request.scheme }}://{{ request.get_host }}{% static 'images/cake.png' %}">
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="{% block og_title %}Dessert - Кондитерские изделия ручной работы{% endblock %}">
+    <meta property="og:description" content="{% block og_description %}Интернет-магазин Dessert - кондитерские изделия ручной работы. Торты, пирожные, десерты с доставкой.{% endblock %}">
+    <meta property="og:image" content="{{ request.scheme }}://{{ request.get_host }}{% static 'images/cake.png' %}">
+    
+    
+    <link rel="icon" type="image/png" href="{% static 'images/cake.png' %}">
+    <link href="{% static 'bootstrap.min.css' %}" rel="stylesheet">
+    <link href="{% static 'css/main.css' %}" rel="stylesheet">
+    {% block extra_css %}{% endblock %}
+</head>
+<body>
+
+<nav class="navbar navbar-expand-lg sticky-top">
+  <div class="container-fluid">
+    <a class="navbar-brand d-flex align-items-center gap-2" href="/">
+      <img src="{% static 'images/cake.png' %}" alt="Dessert" style="width: 32px; height: 32px;">
+      <span>Dessert</span>
+    </a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Переключить навигацию">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+        <li class="nav-item">
+          <a class="nav-link {% if request.resolver_match.url_name == 'index' %}active{% endif %}" {% if request.resolver_match.url_name == 'index' %}aria-current="page"{% endif %} href="{% url 'index' %}">Главная</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link {% if request.resolver_match.url_name == 'catalog' %}active{% endif %}" {% if request.resolver_match.url_name == 'catalog' %}aria-current="page"{% endif %} href="{% url 'catalog' %}">Каталог</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link {% if request.resolver_match.url_name == 'about' %}active{% endif %}" {% if request.resolver_match.url_name == 'about' %}aria-current="page"{% endif %} href="{% url 'about' %}">О нас</a>
+        </li>
+      </ul>
+      <div class="d-flex align-items-center gap-3">
+        {% if user.is_authenticated %}
+          <a href="{% url 'profile' %}" class="text-decoration-none text-dark fw-medium">{{ user.username }}</a>
+          <a href="{% url 'logout' %}" class="btn btn-dark px-4 py-2">Выход</a>
+        {% else %}
+          <a href="{% url 'login' %}" class="text-decoration-none text-dark fw-medium">Вход</a>
+          <a href="{% url 'register' %}" class="btn btn-dark px-4 py-2">Регистрация</a>
+        {% endif %}
+        {% if user.is_authenticated and not user.is_superuser %}
+        <a href="#" class="position-relative text-dark" data-bs-toggle="modal" data-bs-target="#cartModal">
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 16 16">
+            <path d="M0 1.5A.5.5 0 0 1 .5 1H2a.5.5 0 0 1 .485.379L2.89 3H14.5a.5.5 0 0 1 .491.592l-1.5 8A.5.5 0 0 1 13 12H4a.5.5 0 0 1-.491-.408L2.01 3.607 1.61 2H.5a.5.5 0 0 1-.5-.5zM3.618 4l-1.5 7h8.764l1.5-7H3.618zM5 14a1 1 0 1 1 0 2 1 1 0 0 1 0-2zm-2 1a2 2 0 1 0 4 0 2 2 0 0 0-4 0zm7-1a1 1 0 1 1 0 2 1 1 0 0 1 0-2zm-2 1a2 2 0 1 0 4 0 2 2 0 0 0-4 0z"/>
+          </svg>
+          <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger" id="cart-count">0</span>
+        </a>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</nav>
+
+    <!-- Основной контейнер для контента -->
+    <main>
+        {% block content %}
+        {% endblock %}
+    </main>
+
+    <!-- Футер -->
+    <footer class="site-footer">
+        <div class="container">
+            <div class="row py-4">
+                <div class="col-md-4 mb-3 mb-md-0">
+                    <span class="fw-bold" style="font-size: 1.25rem;">Dessert</span>
+                    <p class="text-muted small mt-2 mb-0">Кондитерские изделия ручной работы</p>
+                </div>
+                <div class="col-md-4 mb-3 mb-md-0">
+                    <h6 class="fw-bold mb-3">Навигация</h6>
+                    <ul class="list-unstyled">
+                        <li class="mb-2"><a href="{% url 'index' %}" class="footer-link">Главная</a></li>
+                        <li class="mb-2"><a href="{% url 'catalog' %}" class="footer-link">Каталог</a></li>
+                        <li class="mb-2"><a href="{% url 'about' %}" class="footer-link">О нас</a></li>
+                    </ul>
+                </div>
+                <div class="col-md-4">
+                    <h6 class="fw-bold mb-3">Информация</h6>
+                    <ul class="list-unstyled">
+                        <li class="mb-2"><a href="{% url 'privacy' %}" class="footer-link">Политика конфиденциальности</a></li>
+                        <li class="mb-2"><a href="{% url 'terms' %}" class="footer-link">Пользовательское соглашение</a></li>
+                        <li class="mb-2"><a href="#" data-bs-toggle="modal" data-bs-target="#faqModal" class="footer-link">Часто задаваемые вопросы</a></li>
+                    </ul>
+                    <h6 class="fw-bold mb-3 mt-4">Мы в соцсетях</h6>
+                    <div class="d-flex gap-3">
+                        <a href="https://t.me/" target="_blank" class="text-dark" rel="nofollow">
+                            <img src="{% static 'images/tg-icon.png' %}" alt="Telegram" style="width: 32px; height: 32px;">
+                        </a>
+                        <a href="https://vk.com/" target="_blank" class="text-dark" rel="nofollow">
+                            <img src="{% static 'images/vk-icon.png' %}" alt="ВКонтакте" style="width: 32px; height: 32px;">
+                        </a>
+                        <a href="https://ok.ru/" target="_blank" class="text-dark" rel="nofollow">
+                            <img src="{% static 'images/ok-icon.png' %}" alt="Одноклассники" style="width: 32px; height: 32px;">
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="row border-top pt-3" style="border-color: var(--border) !important;">
+                <div class="col text-center">
+                    <span class="text-muted small">© 2026 Dessert. Все права защищены.</span>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Cookie уведомление -->
+    <div id="cookieNotice" class="position-fixed bottom-0 start-0 end-0 p-3" style="background: var(--surface); border-top: 1px solid var(--border); z-index: 9999; display: none; box-shadow: 0 -4px 12px rgba(0, 0, 0, 0.08);">
+        <div class="container" style="max-width: 1400px;">
+            <div class="d-flex align-items-center justify-content-between flex-wrap gap-3">
+                <div>
+                    <h6 class="fw-bold mb-2">🍪 Мы используем cookie</h6>
+                    <p class="mb-0 text-muted small">
+                        Мы, как настоящая кондитерская, используем «куки» (cookie), чтобы наш сайт работал исправно, а вы могли легко выбирать сладости, добавлять их в корзину и получать персональные предложения. Это делает вашу покупку еще приятнее!
+                        <a href="{% url 'cookies' %}" class="text-dark fw-medium">Подробнее</a>
+                    </p>
+                </div>
+                <button onclick="acceptCookies()" class="btn btn-dark px-4">Принять</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Модальное окно корзины -->
+    {% if user.is_authenticated and not user.is_superuser %}
+    <div class="modal fade" id="cartModal" tabindex="-1">
+        <div class="modal-dialog modal-dialog-scrollable">
+            <div class="modal-content" style="border-radius: 16px; border: 1px solid var(--border);">
+                <div class="modal-header" style="border-bottom: 1px solid var(--border);">
+                    <h5 class="modal-title fw-bold">Моя корзина</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body" id="cart-modal-content">
+                    <div class="text-center py-4">
+                        <div class="spinner-border" role="status"></div>
+                    </div>
+                </div>
+                <div class="modal-footer" style="border-top: 1px solid var(--border);">
+                    <a href="{% url 'cart' %}" class="btn btn-dark w-100">Перейти в корзину</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+
+    <!-- FAQ Modal -->
+    <div class="modal fade" id="faqModal" tabindex="-1">
+        <div class="modal-dialog modal-dialog-scrollable modal-lg">
+            <div class="modal-content" style="border-radius: 16px; border: 1px solid var(--border);">
+                <div class="modal-header" style="border-bottom: 1px solid var(--border);">
+                    <h5 class="modal-title fw-bold">Часто задаваемые вопросы</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body" style="padding: 2rem;">
+                    <div class="accordion" id="faqAccordion">
+                        <div class="accordion-item" style="border: 1px solid var(--border); border-radius: 12px; margin-bottom: 1rem; overflow: hidden;">
+                            <h3 class="accordion-header">
+                                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#faq1" aria-expanded="true" aria-controls="faq1" style="font-weight: 600;">
+                                    Как сделать заказ?
+                                </button>
+                            </h3>
+                            <div id="faq1" class="accordion-collapse collapse show" data-bs-parent="#faqAccordion">
+                                <div class="accordion-body">
+                                    Выберите понравившиеся десерты в каталоге, добавьте их в корзину и оформите заказ. Мы свяжемся с вами для подтверждения деталей.
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="accordion-item" style="border: 1px solid var(--border); border-radius: 12px; margin-bottom: 1rem; overflow: hidden;">
+                            <h3 class="accordion-header">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq2" aria-expanded="false" aria-controls="faq2" style="font-weight: 600;">
+                                    Сколько стоит доставка?
+                                </button>
+                            </h3>
+                            <div id="faq2" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                                <div class="accordion-body">
+                                    Доставка по Санкт-Петербургу — 300 ₽. При заказе от 2000 ₽ доставка бесплатная.
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="accordion-item" style="border: 1px solid var(--border); border-radius: 12px; margin-bottom: 1rem; overflow: hidden;">
+                            <h3 class="accordion-header">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq3" aria-expanded="false" aria-controls="faq3" style="font-weight: 600;">
+                                    Можно ли заказать торт на завтра?
+                                </button>
+                            </h3>
+                            <div id="faq3" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                                <div class="accordion-body">
+                                    Да, мы принимаем срочные заказы. Свяжитесь с нами по телефону +7 (812) 000-00-00, и мы постараемся помочь.
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="accordion-item" style="border: 1px solid var(--border); border-radius: 12px; margin-bottom: 1rem; overflow: hidden;">
+                            <h3 class="accordion-header">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq4" aria-expanded="false" aria-controls="faq4" style="font-weight: 600;">
+                                    Какие способы оплаты доступны?
+                                </button>
+                            </h3>
+                            <div id="faq4" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                                <div class="accordion-body">
+                                    Мы принимаем оплату картой онлайн, наличными или картой при получении.
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="accordion-item" style="border: 1px solid var(--border); border-radius: 12px; overflow: hidden;">
+                            <h3 class="accordion-header">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq5" aria-expanded="false" aria-controls="faq5" style="font-weight: 600;">
+                                    Можно ли сделать индивидуальный дизайн торта?
+                                </button>
+                            </h3>
+                            <div id="faq5" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                                <div class="accordion-body">
+                                    Конечно! Мы создаём торты по индивидуальным эскизам. Напишите нам, и мы обсудим все детали.
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="{% static 'bootstrap.bundle.min.js' %}"></script>
+    <script src="{% static 'js/cookies.js' %}"></script>
+    {% if user.is_authenticated and not user.is_superuser %}
+    <script src="{% static 'js/cart.js' %}"></script>
+    {% endif %}
+    {% block extra_js %}{% endblock %}
+</body>
+</html>

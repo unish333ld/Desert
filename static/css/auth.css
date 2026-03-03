@@ -1,0 +1,54 @@
+.card input {
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 0.75rem;
+    width: 100%;
+}
+.card input:focus {
+    outline: none;
+    border-color: var(--text-primary);
+}
+.card input[type="password"]::-ms-reveal,
+.card input[type="password"]::-ms-clear {
+    display: none;
+}
+.card input[type="password"]::-webkit-credentials-auto-fill-button,
+.card input[type="password"]::-webkit-contacts-auto-fill-button {
+    visibility: hidden;
+    pointer-events: none;
+    position: absolute;
+    right: 0;
+}
+.password-wrapper {
+    position: relative;
+}
+.password-wrapper input {
+    padding-right: 2.5rem;
+}
+.password-toggle {
+    position: absolute;
+    right: 0.75rem;
+    top: 50%;
+    transform: translateY(-50%);
+    cursor: pointer;
+    user-select: none;
+    color: #6c757d;
+    display: flex;
+    align-items: center;
+}
+.password-toggle:hover {
+    color: #495057;
+}
+.error-message {
+    color: #dc3545;
+    font-size: 0.875rem;
+    margin-top: 0.5rem;
+    max-height: 0;
+    overflow: hidden;
+    opacity: 0;
+    transition: all 0.3s ease;
+}
+.error-message.show {
+    max-height: 100px;
+    opacity: 1;
+}

@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Корзина — Desert{% endblock %}
+
+{% block content %}
+<section class="py-5">
+    <div class="container" style="max-width: 1000px;">
+        <h1 class="h3 fw-bold mb-4">Моя корзина</h1>
+        
+        {% if cart.items.all %}
+            <div class="minimal-card">
+                {% for item in cart.items.all %}
+                    <div class="cart-item d-flex align-items-center py-3 {% if not forloop.last %}border-bottom{% endif %}" data-item-id="{{ item.id }}">
+                        <div class="flex-grow-1">
+                            <h6 class="mb-1">{{ item.product.name }}</h6>
+                            <p class="text-muted mb-0 small">{{ item.product.price }} ₽</p>
+                        </div>
+                        <div class="d-flex align-items-center gap-2">
+                            <button class="btn btn-sm btn-outline-secondary" onclick="updateQuantity({{ item.id }}, 'decrease')">−</button>
+                            <span class="quantity px-2">{{ item.quantity }}</span>
+                            <button class="btn btn-sm btn-outline-secondary" onclick="updateQuantity({{ item.id }}, 'increase')">+</button>
+                        </div>
+                        <div class="ms-4 text-end" style="min-width: 100px;">
+                            <p class="mb-0 fw-medium item-total">{{ item.get_total_price }} ₽</p>
+                        </div>
+                        <button class="btn btn-sm btn-link text-danger ms-2" onclick="removeItem({{ item.id }})">✕</button>
+                    </div>
+                {% endfor %}
+                
+                <div class="d-flex justify-content-between align-items-center pt-3 mt-3 border-top">
+                    <h5 class="mb-0">Итого:</h5>
+                    <h5 class="mb-0 fw-bold" id="cart-total">{{ cart.get_total_price }} ₽</h5>
+                </div>
+                
+                <button class="btn btn-dark w-100 py-2 mt-3" onclick="window.location.href='{% url 'checkout' %}'">Оформить заказ</button>
+            </div>
+        {% else %}
+            <div class="text-center py-5">
+                <p class="text-muted">Корзина пуста</p>
+                <a href="{% url 'catalog' %}" class="btn btn-dark mt-3">Перейти в каталог</a>
+            </div>
+        {% endif %}
+    </div>
+</section>
+
+{% block extra_js %}
+<script src="{% static 'js/cart_page.js' %}"></script>
+{% endblock %}
+{% endblock %}
