@@ -81,7 +81,6 @@ def add_product(request):
     if request.method == 'POST':
         name = request.POST.get('name')
         description = request.POST.get('description')
-        composition = request.POST.get('composition')
         allergens = request.POST.get('allergens')
         weight = request.POST.get('weight')
         price = request.POST.get('price')
@@ -101,7 +100,9 @@ def add_product(request):
                 for chunk in image_file.chunks():
                     destination.write(chunk)
             
-            slug = slugify(name)
+            slug = slugify(name, allow_unicode=True)
+            if not slug:
+                slug = f'product-{name[:20]}'
             if Product.objects.filter(slug=slug).exists():
                 counter = 1
                 while Product.objects.filter(slug=f"{slug}-{counter}").exists():
@@ -112,7 +113,6 @@ def add_product(request):
                 name=name,
                 slug=slug,
                 description=description,
-                composition=composition,
                 allergens=allergens,
                 weight=weight,
                 price=price,
@@ -136,7 +136,6 @@ def edit_product(request, product_id):
         old_slug = product.slug
         product.name = request.POST.get('name')
         product.description = request.POST.get('description')
-        product.composition = request.POST.get('composition')
         product.allergens = request.POST.get('allergens')
         product.weight = request.POST.get('weight')
         product.price = request.POST.get('price')
@@ -153,13 +152,17 @@ def edit_product(request, product_id):
         else:
             product.discount_price = None
         
-        new_slug = slugify(product.name)
-        if new_slug != old_slug:
+        new_slug = slugify(product.name, allow_unicode=True)
+        if not new_slug:
+            new_slug = f'product-{product.name[:20]}'
+        if new_slug and new_slug != old_slug:
             if Product.objects.filter(slug=new_slug).exists():
                 counter = 1
                 while Product.objects.filter(slug=f"{new_slug}-{counter}").exists():
                     counter += 1
                 new_slug = f"{new_slug}-{counter}"
+            product.slug = new_slug
+        elif not product.slug:
             product.slug = new_slug
         
         if not product.dessert_type:

@@ -50,6 +50,3 @@ def terms(request):
 
 def cookies(request):
     return render(request, "cookies.html")
-
-def history(request):
-    return render(request, "history.html")

@@ -15,11 +15,11 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path
+from django.urls import path, re_path
 from django.conf import settings
 from django.conf.urls.static import static
 
-from shop.views import index, catalog, about, product_detail, privacy, terms, cookies, history
+from shop.views import index, catalog, about, product_detail, privacy, terms, cookies
 from shop.auth_views import register, user_login, user_logout, profile
 from shop.cart_views import add_to_cart, cart_view, update_cart_item, remove_from_cart, cart_modal, clear_cart
 from shop.checkout_views import checkout, order_success
@@ -31,7 +31,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', index, name='index'),
     path('catalog/', catalog, name='catalog'),
-    path('product/<slug:slug>/', product_detail, name='product_detail'),
+    re_path(r'^product/(?P<slug>[\w-]+)/$', product_detail, name='product_detail'),
     path('about/', about, name='about'),
     path('privacy/', privacy, name='privacy'),
     path('terms/', terms, name='terms'),
@@ -49,7 +49,6 @@ urlpatterns = [
     path('checkout/', checkout, name='checkout'),
     path('order/success/', order_success, name='order_success'),
     path('review/add/<int:order_id>/', add_review, name='add_review'),
-    path('history/', history, name='history'),
     path('admin-panel/', admin_panel, name='admin_panel'),
     path('admin-panel/review/delete/<int:review_id>/', delete_review, name='delete_review'),
     path('admin-panel/reviews/delete-bulk/', delete_reviews_bulk, name='delete_reviews_bulk'),
