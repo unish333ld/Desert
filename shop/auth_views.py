@@ -14,10 +14,14 @@ def register(request):
     if request.method == 'POST':
         form = CustomUserCreationForm(request.POST)
         if form.is_valid():
-            user = form.save()
-            login(request, user)
-            messages.success(request, 'Регистрация прошла успешно!')
-            return redirect('index')
+            try:
+                user = form.save()
+                login(request, user)
+                messages.success(request, 'Регистрация прошла успешно!')
+                return redirect('index')
+            except:
+                messages.error(request, 'username:Это имя пользователя уже занято')
+                return redirect('register')
         else:
             request.session['form_data'] = {
                 'username': request.POST.get('username', ''),

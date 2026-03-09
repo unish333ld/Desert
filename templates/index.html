@@ -120,7 +120,14 @@ Dessert - Кондитерские изделия Санкт-Петербург
                             <img src="{% static product.image %}" alt="{{ product.name }}">
                             <div class="carousel-caption">
                                 <h5 class="fw-bold mb-2">{{ product.name }}</h5>
+                                {% if product.discount_price %}
+                                <p class="mb-3">
+                                    <span style="font-size: 1.2rem;">{{ product.discount_price }} ₽</span>
+                                    <small style="text-decoration: line-through; opacity: 0.7; margin-left: 0.5rem;">{{ product.price }} ₽</small>
+                                </p>
+                                {% else %}
                                 <p class="mb-3">{{ product.price }} ₽</p>
+                                {% endif %}
                                 <a href="{% url 'product_detail' product.slug %}" class="btn btn-light px-4 py-2" rel="nofollow">Подробнее</a>
                             </div>
                         </div>

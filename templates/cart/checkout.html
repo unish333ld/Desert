@@ -27,22 +27,22 @@
         
         <div class="minimal-card">
             <h2 class="h5 fw-bold mb-3">Данные карты</h2>
-            <form method="post" id="checkoutForm" novalidate>
+            <form method="post" id="checkoutForm" novalidate autocomplete="off">
                 {% csrf_token %}
                 <div class="mb-3">
                     <label class="form-label">Номер карты</label>
-                    <input type="text" class="form-control" id="cardNumber" name="card_number" placeholder="1234 5678 9012 3456" maxlength="19">
+                    <input type="text" class="form-control" id="cardNumber" name="card_number" placeholder="1234 5678 9012 3456" maxlength="19" autocomplete="new-password">
                     <div class="text-danger small mt-1" id="cardNumberError" style="display: none;"></div>
                 </div>
                 <div class="row">
                     <div class="col-md-6 mb-3">
                         <label class="form-label">Срок действия</label>
-                        <input type="text" class="form-control" id="cardExpiry" name="card_expiry" placeholder="MM/YY" maxlength="5">
+                        <input type="text" class="form-control" id="cardExpiry" name="card_expiry" placeholder="MM/YY" maxlength="5" autocomplete="new-password">
                         <div class="text-danger small mt-1" id="cardExpiryError" style="display: none;"></div>
                     </div>
                     <div class="col-md-6 mb-3">
                         <label class="form-label">CVV</label>
-                        <input type="text" class="form-control" id="cardCvv" name="card_cvv" placeholder="123" maxlength="3">
+                        <input type="text" class="form-control" id="cardCvv" name="card_cvv" placeholder="123" maxlength="3" autocomplete="new-password">
                         <div class="text-danger small mt-1" id="cardCvvError" style="display: none;"></div>
                     </div>
                 </div>
