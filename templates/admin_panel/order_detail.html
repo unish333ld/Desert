@@ -1,0 +1,57 @@
+{% extends "base.html" %}
+
+{% block title %}Заказ {{ order.order_number }} — Desert{% endblock %}
+
+{% block content %}
+<section class="py-5">
+    <div class="container" style="max-width: 700px;">
+        <div class="d-flex align-items-center justify-content-between mb-4">
+            <h1 class="h3 fw-bold mb-0">Заказ {{ order.order_number }}</h1>
+            <a href="{% url 'admin_panel' %}" class="btn btn-outline-dark btn-sm rounded-pill">← Назад</a>
+        </div>
+
+        <div class="minimal-card mb-3">
+            <div class="d-flex justify-content-between mb-2">
+                <span class="text-muted">Пользователь</span>
+                <span class="fw-bold">{{ order.user.username }}</span>
+            </div>
+            <div class="d-flex justify-content-between mb-2">
+                <span class="text-muted">Дата</span>
+                <span>{{ order.created|date:"d.m.Y H:i" }}</span>
+            </div>
+            <div class="d-flex justify-content-between">
+                <span class="text-muted">Статус</span>
+                {% if order.closed %}
+                <span class="badge bg-secondary">Закрыт</span>
+                {% else %}
+                <span class="badge bg-success">Активен</span>
+                {% endif %}
+            </div>
+        </div>
+
+        <div class="minimal-card mb-3">
+            <h2 class="h6 fw-bold mb-3">Состав заказа</h2>
+            {% for item in order.items.all %}
+            <div class="d-flex justify-content-between align-items-center py-2 {% if not forloop.last %}border-bottom{% endif %}" style="border-color: var(--border);">
+                <div>
+                    <div class="fw-bold">{{ item.product_name }}</div>
+                    <div class="text-muted small">{{ item.quantity }} × {{ item.product_price }} ₽</div>
+                </div>
+                <div class="fw-bold">{{ item.get_total_price }} ₽</div>
+            </div>
+            {% endfor %}
+            <div class="d-flex justify-content-between pt-3 mt-2" style="border-top: 1px solid var(--border);">
+                <span class="fw-bold">Итого</span>
+                <span class="fw-bold">{{ order.total_price }} ₽</span>
+            </div>
+        </div>
+
+        {% if not order.closed %}
+        <form method="post" action="{% url 'close_order' order.id %}">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-danger w-100 rounded-pill">Закрыть заказ</button>
+        </form>
+        {% endif %}
+    </div>
+</section>
+{% endblock %}

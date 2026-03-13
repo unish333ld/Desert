@@ -24,7 +24,7 @@ from shop.auth_views import register, user_login, user_logout, profile
 from shop.cart_views import add_to_cart, cart_view, update_cart_item, remove_from_cart, cart_modal, clear_cart
 from shop.checkout_views import checkout, order_success
 from shop.review_views import add_review
-from shop.admin_views import admin_panel, delete_review, delete_product, add_product, delete_reviews_bulk, edit_product, toggle_availability
+from shop.admin_views import admin_panel, delete_review, delete_product, add_product, delete_reviews_bulk, edit_product, toggle_availability, order_detail
 from shop.admin_views import close_order
 
 urlpatterns = [
@@ -56,6 +56,7 @@ urlpatterns = [
     path('admin-panel/product/add/', add_product, name='add_product'),
     path('admin-panel/product/edit/<int:product_id>/', edit_product, name='edit_product'),
     path('admin-panel/product/toggle/<int:product_id>/', toggle_availability, name='toggle_availability'),
+    path('admin-panel/order/<int:order_id>/', order_detail, name='order_detail'),
     path('close_order/<int:order_id>/', close_order, name='close_order'),
 ]
 

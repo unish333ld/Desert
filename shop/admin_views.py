@@ -8,6 +8,11 @@ from django.core.files.storage import default_storage
 import os
 
 @staff_member_required
+def order_detail(request, order_id):
+    order = get_object_or_404(Order, id=order_id)
+    return render(request, 'admin_panel/order_detail.html', {'order': order})
+
+@staff_member_required
 def close_order(request, order_id):
     order = get_object_or_404(Order, id=order_id)
     order.closed = True
@@ -133,7 +138,6 @@ def edit_product(request, product_id):
     product = get_object_or_404(Product, id=product_id)
     
     if request.method == 'POST':
-        old_slug = product.slug
         product.name = request.POST.get('name')
         product.description = request.POST.get('description')
         product.allergens = request.POST.get('allergens')
@@ -152,17 +156,8 @@ def edit_product(request, product_id):
         else:
             product.discount_price = None
         
-        new_slug = slugify(product.name, allow_unicode=True)
-        if not new_slug:
-            new_slug = f'product-{product.name[:20]}'
-        if new_slug and new_slug != old_slug:
-            if Product.objects.filter(slug=new_slug).exists():
-                counter = 1
-                while Product.objects.filter(slug=f"{new_slug}-{counter}").exists():
-                    counter += 1
-                new_slug = f"{new_slug}-{counter}"
-            product.slug = new_slug
-        elif not product.slug:
+        if not product.slug:
+            new_slug = slugify(product.name, allow_unicode=True) or f'product-{product.id}'
             product.slug = new_slug
         
         if not product.dessert_type:
@@ -182,7 +177,7 @@ def edit_product(request, product_id):
                     destination.write(chunk)
             product.image = file_name
         
-        product.save()
+        product.save(update_fields=['name', 'description', 'allergens', 'weight', 'price', 'discount_price', 'dessert_type', 'available', 'image', 'slug'])
         messages.success(request, 'Товар обновлен')
         return redirect('admin_panel')
     
